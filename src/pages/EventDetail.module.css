@@ -1,0 +1,16 @@
+
+.post-card {
+  text-align: center;
+}
+
+.post-card img{
+  width: 300px;
+}
+
+
+.post-card button{
+  margin-top: 30px;
+  margin-right: 30px;
+  padding: 8px 40px;
+}
+

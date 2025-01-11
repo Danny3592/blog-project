@@ -1,0 +1,10 @@
+nav {
+  display: flex;
+  background: grey;
+  padding: 30px;
+  gap: 30px;
+  font-size: 30px;
+}
+nav a {
+  color: black;
+}
