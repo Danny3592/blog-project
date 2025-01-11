@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import EventsPage,{loader as eventsLoader} from './pages/EventsPage';
+import EventsPage from './pages/EventsPage';
 import EventDetail from './pages/EventDetail';
 import './App.css';
 import HomePage from './pages/HomePage';
@@ -17,7 +17,6 @@ function App() {
         {
           path: '/events',
           element: <EventsPage />,
-          loader:eventsLoader
         },
         {
           path: '/events/:eventId',

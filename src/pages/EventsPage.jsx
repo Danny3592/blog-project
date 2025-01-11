@@ -1,34 +1,33 @@
+/* eslint-disable react/no-unescaped-entities */
 // import { Link } from 'react-router-dom';
 // eslint-disable-next-line no-unused-vars
-import { useLoaderData, useNavigation } from 'react-router-dom';
+
+import { useQuery } from 'react-query';
 import Header from '../components/Header';
 import PostList from '../components/PostList';
+import { getEvents } from '../util/http';
 
 export default function HomePage() {
-  const data = useLoaderData();
-  const navigation = useNavigation();
-  const isLoading = navigation.state === 'loading';
-  console.log("data = ",data)
+  const { data, isPending, isError, error } = useQuery({
+    queryKey: ['events'],
+    queryFn: getEvents,
+  });
+  // console.log('data = =', data);
+  let content;
+  if (isPending) {
+    content = <p>Loading....</p>;
+  }
+  if (isError) {
+    content = <p>Something wrong!!!{error}</p>;
+  }
+  if (data) {
+    content = <PostList posts={data} />;
+  }
+
   return (
     <>
       <Header />
-      {isLoading && <p>Loading....</p>}
-      {!isLoading && <PostList posts={data} />}
+      {content}
     </>
   );
-}
-
-export async function loader() {
-  try {
-    const response = await fetch('http://localhost:3000/posts');
-    if (!response.ok) {
-      throw new Error('Failed to fetch posts');
-    }
-    const data = await response.json();
-    // console.log('data = ', data);
-    return data;
-  } catch (error) {
-    console.error('Error fetching posts:', error);
-    throw error;
-  }
 }

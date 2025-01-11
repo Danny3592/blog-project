@@ -1,13 +1,23 @@
 import { useParams } from 'react-router-dom';
-import { DUMMY_POSTDATA } from '../util/posts';
 import classes from './EventDetail.module.css';
+import { useQuery } from 'react-query';
+import { getEvents } from '../util/http';
 export default function EventDetail() {
   const { eventId } = useParams();
-  const post = DUMMY_POSTDATA.filter((post) => eventId === post.id)[0];
-  const { title, description, image } = post;
-  console.log(post);
-  return (
-    <>
+
+  const { data, isPending, isError, error } = useQuery({
+    queryKey: ['events'],
+    queryFn: getEvents,
+  });
+
+  let content;
+  if (isPending) {
+    content = <p>Loading......</p>;
+  }
+  if (data) {
+    const post = data.filter((post) => eventId === post.id)[0];
+    const { title, description, image } = post;
+    content = (
       <div className={classes['post-card']}>
         <h2>{title}</h2>
         <p>{description}</p>
@@ -17,6 +27,12 @@ export default function EventDetail() {
           <button>delete</button>
         </div>
       </div>
-    </>
-  );
+    );
+  }
+
+  if (isError) {
+    content = <p>ERROR</p>;
+  }
+
+  return <>{content}</>;
 }
